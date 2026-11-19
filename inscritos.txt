@@ -1,0 +1,7 @@
+a;1ºESO;Robótica;Lun-Mié 16:00;Iniciación;Mensual;2;Seguro escolar,Material incluido
+b;1ºESO;Ajedrez;Mar-Jue 16:00;Intermedio;Trimestral;2;Seguro escolar,Transporte,Material incluido
+c;1ºESO;Idiomas;Sabado 10:00;Avanzado;Anual;10;Seguro escolar,Comedor,Transporte,Material incluido
+
+a;1ºESO;Robótica;Lun-Mié 16:00;Iniciación;Mensual;2;Seguro escolar,Material incluido
+b;1ºESO;Ajedrez;Mar-Jue 16:00;Intermedio;Trimestral;2;Seguro escolar,Transporte,Material incluido
+c;1ºESO;Idiomas;Sabado 10:00;Avanzado;Anual;10;Seguro escolar,Comedor,Transporte,Material incluido
