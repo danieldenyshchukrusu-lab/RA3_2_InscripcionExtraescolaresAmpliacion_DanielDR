@@ -38,6 +38,14 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
+/**
+ * 
+ * El controlador de la práctica RA_3_2.
+ * 
+ * @author Daniel Denyshchuk Rusu
+ * @version 1.0
+ */
+
 public class PrimaryController {
 
     //NO SE SI HAY QUE METER UN TEXT-INPUT-DIALOG.
@@ -172,8 +180,28 @@ public class PrimaryController {
     
     //Esto lo hago para que en el initialize a la hora de reactivar varias veces el programa, no añada los ITEMS de la ESO siempre.
     
+    /**
+     * Inicializa el formulario de inscripciones. JavaFX lo ejecuta una sola vez,
+     * automáticamente, justo después de cargar el FXML.
+     * <p>
+     * Deja la interfaz en su estado inicial y configura:
+     * <ul>
+     *   <li>El estado desactivado del combo de curso y del panel de configuración.</li>
+     *   <li>Los bindings de los botones: Añadir y Buscar se desactivan si no se ha
+     *       pulsado Intro en el nombre o si hay algo seleccionado en la lista;
+     *       Eliminar y Renombrar solo se activan con una selección.</li>
+     *   <li>Los cursos disponibles del combo (una sola vez, controlado con
+     *       {@code contador}).</li>
+     *   <li>Un listener que muestra en el formulario la inscripción seleccionada.</li>
+     *   <li>Un listener que limita el nombre a 15 caracteres.</li>
+     *   <li>El binding entre el slider de horas y su etiqueta, y la configuración
+     *       del propio slider (de 1 a 10, con marcas y saltos de uno en uno).</li>
+     *   <li>El enlace del {@code ListView} con la lista {@code Inscritos}.</li>
+     * </ul>
+     * No recibe parámetros, no devuelve nada y no lanza excepciones comprobadas,
+     */
     @FXML
-    private void initialize() {
+    public void initialize() {
         
         ComboboxCurso.setDisable(true);
         PanelScroll.setDisable(true);
@@ -208,7 +236,9 @@ public class PrimaryController {
         //El listener para lo del max 15 caracteres. //NO LO HEMOS DADO PERO APRENDETELO.
         NombreAlumno.textProperty().addListener(
                 (obs, antiguo, nuevo) -> {
-                    if (nuevo.length() > 15) NombreAlumno.setText(antiguo);
+                    if (nuevo.length() > 15) {
+                        NombreAlumno.setText(antiguo);
+                    }
         });
         
         //Binding de slider con label
@@ -227,11 +257,16 @@ public class PrimaryController {
         
         ListaInscritos.setItems(Inscritos);
         
-        
     }
     
+    /**
+     * 
+     * Al introducir un nombre dentro del TextField NombreAlumno, este desactiva las Deshabilitaciones
+     * y llama al metodo CONFIGURACION-ESTANDAR. Si no, vuelve al estado inicial del programa por metodo y suelta un AlertWarning.
+     * 
+     */
     @FXML 
-    private void alPulsar() {
+    public void alPulsar() {
         if(!NombreAlumno.getText().isBlank()||!NombreAlumno.getText().isEmpty()) {  
             ComboboxCurso.setDisable(false);
             PanelScroll.setDisable(false);
@@ -255,8 +290,11 @@ public class PrimaryController {
         }
     }
     
+    /**
+     * Esta es la configuracion estandar en la que debe de estar el panel de configuración.
+     */
     @FXML
-    private void configuracionEstandar() {
+    public void configuracionEstandar() {
         
         Robotica.setSelected(true);
         LunesMiercoles.setSelected(true);
@@ -271,8 +309,11 @@ public class PrimaryController {
         Deslizador.setValue(2);
     }
     
+    /**
+     * Esta configuración quita todas las selecciones y pone de valor el Deslizador en 1.
+     */
     @FXML
-    private void configuracionEstandarFALSE() {
+    public void configuracionEstandarFALSE() {
         Robotica.setSelected(false);
         LunesMiercoles.setSelected(false);
         Iniciacion.setSelected(false);
@@ -286,8 +327,12 @@ public class PrimaryController {
         Deslizador.setValue(1);
     }
     
+    /**
+     * Lo utilizamos en (AL-AÑADIR, AL_BUSCAR, AL-ELIMINAR...) entre otros.
+     * Nos devuelve el estado inicial del programa con todo limpio + deshabilitados algunos paneles y botones.
+     */
     @FXML
-    private void estadoInicialPrograma() {
+    public void estadoInicialPrograma() {
         NombreAlumno.clear();
         ComboboxCurso.getSelectionModel().selectFirst();
         ComboboxCurso.setDisable(true);
@@ -301,10 +346,12 @@ public class PrimaryController {
         NombreAlumno.requestFocus();
     }
     
-    //VUELVE A REVISAR ABSOLUTAMENTE TODO EL CODIGO DE ARRIBA Y LUEGO HAZ TODO 
-    
+    /**
+     * Para añadir una nueva Inscripción dentro de nuestro listado de Inscripciones.
+     * Ya una vez añadido, volveremos al estado inicial del programa.
+     */
     @FXML 
-    private void AlAñadir() {
+    public void AlAñadir() {
         
         String nombre = NombreAlumno.getText();
         String curso = ComboboxCurso.getValue();
@@ -342,7 +389,6 @@ public class PrimaryController {
         Inscritos.add(inscripcion);
         AlCancelar();
         
-        //Llamamos otra vez al initialize para que luego no podamos añadir un alumno null.
         estadoInicialPrograma();
         
         alertaInfo.setHeaderText("INSCRIPCION REALIZADA");
@@ -350,7 +396,11 @@ public class PrimaryController {
         alertaInfo.showAndWait();
     }
     
-    private void mostrar(Inscripcion i) {
+    /**
+     * Nos mostrará los datos completos de un objeto Inscripcion.
+     * @param i objeto inscripcion el cual se va a mostrar en el panel de configuracion, nombre y curso.
+     */
+    public void mostrar(Inscripcion i) {
         NombreAlumno.setText(i.getNombre());
         ComboboxCurso.setValue(i.getCurso());
 
@@ -384,9 +434,15 @@ public class PrimaryController {
         SeguroEscolar.setSelected(i.getOpcionesElegidas().contains(SeguroEscolar.getText()));
         MaterialIncluido.setSelected(i.getOpcionesElegidas().contains(MaterialIncluido.getText()));
 }
-    
+    /**
+     * Para poder buscar algo, necesitaremos que previamente este introducido un nombre dentro del TextField.
+     * Nos mostrará los datos de la configuración de esa persona, y si hay varias, nos ira preguntando con un 
+     * Alert Confirmation si queremos seguir viendo las otras personas que tienen el mismo nombre si es que existen.
+     * 
+     * Ya una consultado todo, volveremos al estado inicial del programa.
+     */
     @FXML 
-    private void AlBuscar() {
+    public void AlBuscar() {
         
         //1. PRIMERO TENDREMOS QUE AGRARRAR EL NOMBRE DEL CAMPO, Y TODAS LAS COINCIDENCIAS METERLAS EN UNA UNICA LISTA
         
@@ -436,8 +492,13 @@ public class PrimaryController {
         }
     }
     
+    /**
+     * Lo utilizamos para borrar una inscripción que tenemos seleccionada de la ListView.
+     * Nos preguntara con un Alert Confirmation si queremos eliminarlo o no.
+     * Luego volverá al estado inicial del programa.
+     */
     @FXML 
-    private void AlEliminar() {
+    public void AlEliminar() {
         Inscripcion seleccionado = ListaInscritos.getSelectionModel().getSelectedItem();
         
         Iterator<Inscripcion> it = ListaInscritos.getItems().iterator();
@@ -457,8 +518,14 @@ public class PrimaryController {
         estadoInicialPrograma();
     }
     
+    /**
+     * Una vez tenemos seleccionado una inscripción de nuestra ListView y le damos al botón
+     * nos abrirá un TextInputDialog para renombrar al alumno, y mientras este nombre cumpla con las normas
+     * se cambiará el nombre. 
+     * Si no cumple con las normas saltará un Alert Warning
+     */
     @FXML 
-    private void AlRenombrar() {
+    public void AlRenombrar() {
         Inscripcion seleccionado = ListaInscritos.getSelectionModel().getSelectedItem();
         
         TextInputDialog dialogo = new TextInputDialog(seleccionado.getNombre());
@@ -482,8 +549,12 @@ public class PrimaryController {
     }
     
     //AQUI DENTRO TAMBIEN TENDREMOS QUE HACER ALGO QUE HAGA SI EL TEXTFIELD ESTA VACIO SI O SI NO PODAMOS AÑADIR ALGO.
+    
+    /**
+     * Este metodo borra absolutamente todas las selecciones y limpia prácticamente todos los bloques.
+     */
     @FXML 
-    private void AlCancelar() {
+    public void AlCancelar() {
         NombreAlumno.setText(null);
         
         SeguroEscolar.setSelected(false);
@@ -502,8 +573,11 @@ public class PrimaryController {
         estadoInicialPrograma();
     }
     
+    /**
+     * Para poder salir de nuestro programa con el boton Salir.
+     */
     @FXML 
-    private void AlSalir() {
+    public void AlSalir() {
         
         boolean seguir = false;
         
@@ -520,8 +594,13 @@ public class PrimaryController {
         }
     }   
     
+    /**
+     * Guardaremos dentro de un fichero Inscritos.txt las inscripciones que hayan dentro del ListView.
+     * (Hemos utilizado CREATE y APPEND para que se cree el fichero si este no existe, y que se añadan mas datos al final sin sobreescribir lo que hay en el fichero)
+     * Todo con BufferedWriter y BufferedReader, si todo esta correcto salta un Alert Info de que el guardado ha sido completado.
+     */
     @FXML
-    private void GuardarInscripciones() {
+    public void GuardarInscripciones() {
         if (Inscritos.isEmpty()) {
             alertaWarning.setHeaderText("LISTA VACIA");
             alertaWarning.setContentText("No se puede guardar nada por estar la lista vacia");
@@ -561,24 +640,35 @@ public class PrimaryController {
         }
     }
     
+    /**
+     * FASE 1. Leeremos el fichero linea a linea para poder construir todos los objetos y estos guardarlos en un ArrayList.
+     * FASE 2. Mostraremos cada inscripción una a una, y las pasaremos al ListView mientras las mostramos.
+     * FASE 3. Reescribiremos el fichero solo con las que NO se han pasado aun.
+     * 
+     * Ejemplo: fichero con A, B, C, D. Se pasan A y B y se pulsa Cancelar (n = 2).
+     * El fichero se reescribe y queda solo con C y D, y A y B están en la lista del programa.
+     * Al pulsar Guardar inscripciones (con APPEND), A y B se escriben al final,
+     * y el fichero queda: C, D, A, B. No se pierde ni se duplica ninguna.
+     */
     @FXML
-    private void MostrarInscripciones() {
+    public void MostrarInscripciones() {
         File f = new File(FICHERO);
-        
+            
         if (!f.exists()) {
             alertaInfo.setHeaderText("NO HAY INSCRIPCIONES GUARDADAS");
             alertaInfo.setContentText("NO EXISTE el fichero de guardado");
             alertaInfo.showAndWait();
-            return;
+            return; //Se avisa y termina
         }
         
+        List<Inscripcion> inscripcionesGuardadas = new ArrayList<>();
+        
+        //FASE 1. Leer el fichero linea a linea para poder construir los objetos.
         try (BufferedReader in = Files.newBufferedReader(Path.of(FICHERO))) {
            
             String linea;
-            boolean seguir = true;
-            
-            
-            while ((linea = in.readLine())!=null && seguir) {
+
+            while ((linea = in.readLine())!=null) {
                 String[] p = linea.split(";");
                 String nombre = p[0];
                 String curso = p[1];
@@ -591,30 +681,69 @@ public class PrimaryController {
                 List <String> opciones = new ArrayList<>();
                 String[] partes = p[7].split(",");
                 
-                for (String opcion : partes) {
-                    opciones.add(opcion);
+                if (!p[7].isBlank()) {
+                    for (String opcion : partes) {
+                        opciones.add(opcion);
+                    }
                 }
                 
                 Inscripcion i = new Inscripcion(nombre, curso, actividad, turno, nivel, pago, horasSemanales, opciones);
-                
-                Inscritos.add(i);
-                mostrar(i);
-                
-                //No he podido hacer lo de que se borre o no porque seria cambiar todo el metodo.
-                
-                alertaConfirm.setHeaderText("¿Ver la siguiente?");
-                Optional<ButtonType> respuesta = alertaConfirm.showAndWait();     
-                seguir = respuesta.isPresent() && respuesta.get() == ButtonType.OK;
-                
-                if (seguir==false) {
-                    NombreAlumno.requestFocus();
-                }
+                inscripcionesGuardadas.add(i);
             } 
         } catch (IOException ex) {
             System.getLogger(PrimaryController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         
+        // Si el fichero estaba vacío, se avisa y se termina
+        if (inscripcionesGuardadas.isEmpty()) {
+            alertaInfo.setHeaderText("No hay inscripciones guardadas");
+            alertaInfo.setContentText("El fichero no contiene inscripciones");
+            alertaInfo.showAndWait();
+            return;
+        }
+        
+        //FASE 2. mostrar una a una y pasarlas a la lista del programa.
+        
+        int n = 0;
+        boolean seguir = true;
+        
+        while (seguir==true && n < inscripcionesGuardadas.size()) {
+            Inscripcion i = inscripcionesGuardadas.get(n);
+            mostrar(i);         //Se rellena el formulario
+            Inscritos.add(i);   //Se añade la lista del programa
+            n++;                //Ya hemos pasado una Inscripcion.
+            
+            boolean quedanMas = n < inscripcionesGuardadas.size(); //quedanMas sera verdadero mientras se cumpla lo de la derecha.
+        
+            if (quedanMas) { //si quedanMas es true:
+                alertaConfirm.setHeaderText("¿Ver la siguiente?");
+                Optional<ButtonType> respuesta = alertaConfirm.showAndWait();
+                
+                seguir = respuesta.isPresent() && respuesta.get() == ButtonType.OK; //seguir será true mientras haya respuesta presente y el ButtonType sea OK.
+
+                if (!seguir) { //Si no cumple con lo de arriba, (que es basicamente que le damos al boton de cancelar)
+                    NombreAlumno.requestFocus();
+                }
+            }   
+            
+        }
+        
+        //FASE 3. reescribir el fichero solo con las que NO se han pasado aun.
+        
+        try (BufferedWriter out = Files.newBufferedWriter(Path.of(FICHERO))) {
+            
+            //Una vez le haya dado a cancelar, se reescribe el fichero desde el contador n hasta el final, para guardar los otros 2 que no hemos mostrado en el fichero reescrito.
+            //Y ahora quedan los otros 2 principales (A y B) que estan en la ListView, y como en GuardarInscritos tenemeos el .APPEND, estos se guardaran despues de (C y D)
+            
+            for (int k = n; k < inscripcionesGuardadas.size(); k++) {
+                out.write(inscripcionesGuardadas.get(k).toStringUno());
+                out.newLine();
+            }
+        } catch (IOException e) {
+            alertaErr.setHeaderText("ERROR");
+            alertaErr.setContentText("No se pudo actualizar el fichero");
+            alertaErr.showAndWait();
+        }
     }
-    
 }
 

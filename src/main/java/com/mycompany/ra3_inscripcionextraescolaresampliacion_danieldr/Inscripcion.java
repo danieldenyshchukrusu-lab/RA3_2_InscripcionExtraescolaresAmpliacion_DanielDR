@@ -104,6 +104,9 @@ public class Inscripcion {
         this.opcionesElegidas = opcionesElegidas;
     }
 
+    
+    
+    
     @Override
     public String toString() {
         return nombre + "--" + actividad;
@@ -119,4 +122,25 @@ public class Inscripcion {
         return opciones;
     }
     
+    //HE HECHO ESTE METODO PARA PODER HACER TESTS DE SI EL NOMBRE ES VALIDO.
+    public boolean nombreValido() {
+        boolean resultado = false;
+        
+        if (nombre!=null && nombre.length()>=1 && nombre.length() <= 15) {
+            return true;
+        }
+        
+        return resultado;
+    }
+    
+    //HE HECHO ESTE METODO PARA PODER HACER TESTS DE SI EL NOMBRE ES VALIDO.
+    public boolean horasValidas() {
+        boolean resultado = false;
+        
+        if (horasSemanales>=1 && horasSemanales <= 10) {
+            return true;
+        }
+        
+        return resultado;
+    }
 }
